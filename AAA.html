@@ -1,0 +1,158 @@
+<!doctype html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Senin İçin 💖</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;800&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin:0;
+      height:100vh;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      background:#0f0f14;
+      color:white;
+      font-family:Montserrat, sans-serif;
+      text-align:center;
+      overflow:hidden;
+    }
+    .box {
+      background:rgba(255,255,255,0.05);
+      padding:20px;
+      border-radius:12px;
+      box-shadow:0 4px 20px rgba(0,0,0,0.5);
+      max-width:320px;
+      transition: all 0.3s ease;
+    }
+    h1 {
+      font-size:1.4rem;
+      margin-bottom:20px;
+    }
+    button {
+      padding:10px 18px;
+      border:none;
+      border-radius:8px;
+      font-weight:600;
+      margin:5px;
+      cursor:pointer;
+      transition: all 0.4s ease;
+    }
+    .yes {
+      background:#ff4da6;
+      color:#fff;
+      font-size: 1rem;
+    }
+    .no {
+      background:#444;
+      color:#fff;
+    }
+    img {
+      max-width:100%;
+      border-radius:8px;
+      margin-top:15px;
+    }
+    /* Bildirim */
+    .notification {
+      position: fixed;
+      top: -60px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #ff4da6;
+      padding: 12px 20px;
+      border-radius: 8px;
+      font-weight: 600;
+      color: white;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+      animation: slideDown 0.6s forwards, slideUp 0.6s forwards 3s;
+      z-index: 999;
+    }
+    @keyframes slideDown {
+      to { top: 20px; }
+    }
+    @keyframes slideUp {
+      to { top: -60px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="box" id="box">
+    <h1 id="question">Beni seviyor musun? ❤️</h1>
+    <button class="yes" id="yesBtn" onclick="yesAnswer()">Evet</button>
+    <button class="no" onclick="noAnswer()">Hayır</button>
+  </div>
+
+  <script>
+    let userName = ""; 
+    let yesSize = 1; // Evet butonu büyüklüğü
+    let yesOffset = 0; // Sağa kayma miktarı
+
+    function showNotification(message, color="#ff4da6") {
+      const notif = document.createElement("div");
+      notif.className = "notification";
+      notif.style.background = color;
+      notif.textContent = message;
+      document.body.appendChild(notif);
+      setTimeout(() => notif.remove(), 4000);
+    }
+
+    window.onload = () => {
+      userName = prompt("İsminizi girin:") || "";
+      if (userName) {
+        const lower = userName.trim().toLowerCase();
+        if (lower === "elif") {
+          showNotification("Hoşgeldiniz Prensesim 💖", "#ff4da6");
+        } else if (lower === "mert") {
+          showNotification("Hoşgeldin Yazılımcı Abi 👑", "#4da6ff");
+        } else if (lower === "engin" || lower === "arda" || lower === "ömer") {
+          showNotification("Hoşgeldin Yarram 😎", "#a5766b");
+        } else if (lower === "hatice") {
+          showNotification("OOO ABLAM HOŞGELDİN :D", "#a5766b");
+        } else {
+          showNotification("Sen kimsin? 🤨", "#ff4444");
+        }
+      }
+    };
+
+    function yesAnswer(){
+      document.getElementById('box').innerHTML =`
+        <h1>Bende seni çok seviyorum! 💖 ${userName}</h1>
+        <img src="https://media.giphy.com/media/MDJ9IbxxvDUQM/giphy.gif" alt="Sevgi" />
+      `;  
+    }
+
+    function noAnswer(){
+      let q = document.getElementById('question');
+      if(!q.dataset.count){
+        q.dataset.count = 1;
+      } else {
+        q.dataset.count = parseInt(q.dataset.count) + 1;
+      }
+      q.textContent = q.dataset.count === 1 ? 'Emin misin? 🥺' : 'Tekrar soruyorum... Beni seviyor musun? ❤️';
+
+      // Evet butonunu büyüt ve sağa kaydır
+      const yesBtn = document.getElementById("yesBtn");
+      yesSize += 0.4; // büyüme miktarı
+      yesOffset += 20; // piksel sağa kayma
+      yesBtn.style.transform = `scale(${yesSize}) translateX(${yesOffset}px)`;
+
+      // Tam ekran olunca kaybolsun
+      if (yesSize >= 5) {
+        yesBtn.style.transition = "all 0.5s ease";
+        yesBtn.style.position = "fixed";
+        yesBtn.style.top = "0";
+        yesBtn.style.left = "0";
+        yesBtn.style.width = "100%";
+        yesBtn.style.height = "100%";
+        yesBtn.style.fontSize = "3rem";
+        yesBtn.textContent = "EVET 💖";   
+        setTimeout(() => {
+          yesBtn.style.display = "none";
+          yesAnswer();
+        }, 1000);
+      }
+    }
+  </script>
+</body>
+</html>
